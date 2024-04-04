@@ -1,8 +1,9 @@
-package main
+package db
 
 import "database/sql"
 
-type Store interface{}
+type Store interface {
+}
 
 type Storage struct {
 	db *sql.DB

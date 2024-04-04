@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 
+	"todo-api/cmd/api"
+	"todo-api/db"
+
 	"github.com/go-sql-driver/mysql"
 )
 
@@ -16,15 +19,15 @@ func main() {
 		AllowNativePasswords: true,
 		ParseTime:            true,
 	}
-	sqlStorage := NewMySQLStorage(cfg)
+	sqlStorage := db.NewMySQLStorage(cfg)
 
-	db, err := sqlStorage.Init()
+	database, err := sqlStorage.Init()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	store := NewStorage(db)
-	api := NewAPIServer(":8080", store)
+	storage := db.NewStorage(database)
+	api := api.NewAPIServer(":8080", storage)
 
 	api.Start()
 }

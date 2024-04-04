@@ -1,18 +1,19 @@
-package main
+package api
 
 import (
 	"log"
 	"net/http"
+	"todo-api/db"
 
 	"github.com/gorilla/mux"
 )
 
 type APIServer struct {
 	addr  string
-	store Store
+	store db.Store
 }
 
-func NewAPIServer(addr string, store Store) *APIServer {
+func NewAPIServer(addr string, store db.Store) *APIServer {
 	return &APIServer{addr: addr, store: store}
 }
 
