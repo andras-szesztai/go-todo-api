@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS todos DEFAULT CHARACTER SET utf8 COLLATE utf8_gene
 
 USE todos;
 
-CREATE TABLE IF NOT EXISTS tasks (
+CREATE TABLE IF NOT EXISTS todos (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name VARCHAR(100) NOT NULL,
 	status ENUM('TODO', 'IN_PROGRESS', 'DONE') NOT NULL DEFAULT 'TODO',
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS tasks (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO tasks (name, status) VALUES ('Task 1', 'TODO', 1);
-INSERT INTO tasks (name, status) VALUES ('Task 2', 'IN_PROGRESS', 2);
-INSERT INTO tasks (name, status) VALUES ('Task 3', 'DONE', 3);
+INSERT INTO todos (name, status) VALUES ('Task 1', 'TODO');
+INSERT INTO todos (name, status) VALUES ('Task 2', 'IN_PROGRESS');
+INSERT INTO todos (name, status) VALUES ('Task 3', 'DONE');
 

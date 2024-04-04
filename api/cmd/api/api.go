@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"todo-api/db"
+	"todo-api/services/todos"
 
 	"github.com/gorilla/mux"
 )
@@ -21,9 +22,8 @@ func (server *APIServer) Start() {
 	router := mux.NewRouter()
 	subRouter := router.PathPrefix("/api/v1").Subrouter()
 
-	subRouter.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, world!"))
-	}).Methods("GET")
+	taskService := todos.NewTodosService(server.store)
+	taskService.RegisterRoutes(subRouter)
 
 	log.Println("Starting API server on", server.addr)
 
