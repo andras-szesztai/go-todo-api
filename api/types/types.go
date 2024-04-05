@@ -8,7 +8,11 @@ type ErrorResponse struct {
 
 type Todo struct {
 	Id        int64     `json:"id"`
-	Name      string    `json:"firstName"`
+	Name      string    `json:"name"`
 	Status    string    `json:"status"`
 	CreatedAt time.Time `json:"createdAt"`
+}
+
+type PostTodoRequest struct {
+	Name string `json:"name"`
 }

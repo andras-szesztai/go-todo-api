@@ -2,12 +2,14 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"todo-api/types"
 )
 
 type Store interface {
 	GetTodos() ([]types.Todo, error)
 	GetTodoById(id string) (types.Todo, error)
+	PostTodo(todo *types.PostTodoRequest) (*types.Todo, error)
 }
 
 type Storage struct {
@@ -46,4 +48,22 @@ func (storage *Storage) GetTodoById(id string) (types.Todo, error) {
 	}
 
 	return todo, nil
+}
+
+func (storage *Storage) PostTodo(todo *types.PostTodoRequest) (*types.Todo, error) {
+	result, err := storage.db.Exec("INSERT INTO todos (name) VALUES (?)", todo.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	if createdTodo, err := storage.GetTodoById(fmt.Sprint(id)); err != nil {
+		return nil, err
+	} else {
+		return &createdTodo, nil
+	}
 }
