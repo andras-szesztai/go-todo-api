@@ -7,6 +7,7 @@ import (
 
 type Store interface {
 	GetTodos() ([]types.Todo, error)
+	GetTodoById(id string) (types.Todo, error)
 }
 
 type Storage struct {
@@ -35,5 +36,14 @@ func (storage *Storage) GetTodos() ([]types.Todo, error) {
 	}
 
 	return todos, nil
+}
 
+func (storage *Storage) GetTodoById(id string) (types.Todo, error) {
+	var todo types.Todo
+	err := storage.db.QueryRow("SELECT * FROM todos WHERE id = ?", id).Scan(&todo.Id, &todo.Name, &todo.Status, &todo.CreatedAt)
+	if err != nil {
+		return types.Todo{}, err
+	}
+
+	return todo, nil
 }
