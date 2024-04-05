@@ -1,26 +1,19 @@
 # syntax=docker/dockerfile:1
 
-# Build the application from source
+
 FROM golang:1.22.1 AS build-stage
+
 WORKDIR /app
 
-COPY go.mod go.sum ./
+RUN go install github.com/cosmtrek/air@latest
+
+COPY go.mod go.sum ./api/
+
+WORKDIR /app/api
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /api ./cmd/main.go
+RUN pwd
 
-# Run the tests in the container
-FROM build-stage AS run-test-stage
-RUN go test -v ./...
-
-# Deploy the application binary into a lean image
-FROM scratch AS build-release-stage
-WORKDIR /
-
-COPY --from=build-stage /api /api
-
-EXPOSE 8080
-
-ENTRYPOINT ["/api"]
+CMD ["air", "-c", ".air.toml"]
